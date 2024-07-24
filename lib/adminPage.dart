@@ -14,6 +14,9 @@ class RecordingScreen extends StatefulWidget {
 }
 
 class _RecordingScreenState extends State<RecordingScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _transcriptController = TextEditingController();
+  final List _recordedPodcasts = [];
   bool isRecording = false;
   late final AudioRecorder _audioRecorder;
   String? _audioPath;
@@ -67,6 +70,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
       setState(() {
         _audioPath = path!;
       });
+      _recordedPodcasts.add(_audioPath);
       debugPrint('=========>>>>>> PATH: $_audioPath <<<<<<===========');
     } catch (e) {
       debugPrint('ERROR WHILE STOP RECORDING: $e');
@@ -98,16 +102,69 @@ class _RecordingScreenState extends State<RecordingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          if (isRecording) const CustomRecordingWaveWidget(),
-          const SizedBox(height: 16),
-          CustomRecordingButton(
-            isRecording: isRecording,
-            onPressed: () => _record(),
+      appBar: AppBar(
+        elevation: 5,
+        centerTitle: true,
+        title: const Text('New Podcast'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Spacer(),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter a Title';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(label: Text("Title")),
+              ),
+              TextFormField(
+                //scrollController: ,
+                maxLines: 10,
+                minLines: 1,
+                controller: _transcriptController,
+                decoration:
+                    const InputDecoration(label: Text("Type transcript here")),
+              ),
+              DropdownButtonFormField(
+                items: const [],
+                onChanged: (value) {},
+                decoration: const InputDecoration(label: Text('Pick Category')),
+              ),
+              if (isRecording) const CustomRecordingWaveWidget(),
+              const SizedBox(height: 16),
+              if (_recordedPodcasts.isNotEmpty)
+                ListTile(
+                  title: Text(_recordedPodcasts.last),
+                ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  children: [
+                    CustomRecordingButton(
+                      isRecording: isRecording,
+                      onPressed: () => _record(),
+                    ),
+                    const Text('Tap to record'),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      minimumSize: WidgetStatePropertyAll<Size>(
+                          Size(MediaQuery.sizeOf(context).width * .9, 50))),
+                  onPressed: () {},
+                  child: const Text("Upload Devotion"))
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
