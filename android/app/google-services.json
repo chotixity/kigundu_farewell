@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "196835660481",
+    "project_id": "podcasts-3b171",
+    "storage_bucket": "podcasts-3b171.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196835660481:android:bf857c68e4844cff1c7a40",
+        "android_client_info": {
+          "package_name": "com.example.podcasts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTEp12ZNtvvVbosHQQQwGnrRZWZGQeLM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

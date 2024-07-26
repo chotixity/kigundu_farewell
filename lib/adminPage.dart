@@ -1,7 +1,13 @@
 import 'dart:math';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:podcasts/provider/podcast_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/widgets.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import './models/podcast.dart';
 import 'package:record/record.dart';
 import './custom_recording_button.dart';
 import './custom_recording_wave_widget.dart';
@@ -14,6 +20,10 @@ class RecordingScreen extends StatefulWidget {
 }
 
 class _RecordingScreenState extends State<RecordingScreen> {
+  PodCastCategory? _selectedCategory;
+  final TextEditingController _titleController = TextEditingController();
+  bool _recordAudio = true;
+  final _player = AudioPlayer();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _transcriptController = TextEditingController();
   final List _recordedPodcasts = [];
@@ -24,6 +34,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
   @override
   void initState() {
     _audioRecorder = AudioRecorder();
+    WidgetsBinding.instance.scheduleFrameCallback((_) {
+      Provider.of<PodcastProvider>(context, listen: false).getPodcasts();
+    });
     super.initState();
   }
 
@@ -41,6 +54,34 @@ class _RecordingScreenState extends State<RecordingScreen> {
       (index) => chars[random.nextInt(chars.length)],
       growable: false,
     ).join();
+  }
+
+  //TODO: Pick files from local storage
+  Future<void> pickAudioFile() async {
+    try {
+      // Configure the file picker to pick audio files
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType
+            .audio, // Set to FileType.audio to filter for audio files only
+        allowMultiple:
+            false, // Set to true if you want to allow multiple file selection
+      );
+
+      if (result != null) {
+        // Get the selected file
+        PlatformFile file = result.files.first;
+        _recordedPodcasts.add(file.path);
+        // Use the file path or file name as needed
+        print('Picked file path: ${file.path}');
+        print('Picked file name: ${file.name}');
+      } else {
+        // User canceled the picker
+        print('No file selected.');
+      }
+    } catch (e) {
+      // Handle any exceptions
+      print('Error picking file: $e');
+    }
   }
 
   Future<void> _startRecording() async {
@@ -114,8 +155,23 @@ class _RecordingScreenState extends State<RecordingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SwitchListTile.adaptive(
+                title: const Text(
+                  "Record Audio",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+                subtitle: const Text(
+                    "Toggle this switch to pick a recorded audio from the device"),
+                value: _recordAudio,
+                onChanged: (value) {
+                  setState(() {
+                    _recordAudio = value;
+                  });
+                },
+              ),
               const Spacer(),
               TextFormField(
+                controller: _titleController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter a Title';
@@ -132,10 +188,41 @@ class _RecordingScreenState extends State<RecordingScreen> {
                 decoration:
                     const InputDecoration(label: Text("Type transcript here")),
               ),
-              DropdownButtonFormField(
-                items: const [],
-                onChanged: (value) {},
-                decoration: const InputDecoration(label: Text('Pick Category')),
+              DropdownButtonFormField<PodCastCategory>(
+                value: _selectedCategory,
+                items: const [
+                  DropdownMenuItem(
+                    value: PodCastCategory.devotion,
+                    child: Text("Daily Devotion"),
+                  ),
+                  DropdownMenuItem(
+                    value: PodCastCategory.doctrine,
+                    child: Text("Doctrinal Study"),
+                  ),
+                  DropdownMenuItem(
+                    value: PodCastCategory.sermon,
+                    child: Text("Sermon"),
+                  ),
+                  DropdownMenuItem(
+                    value: PodCastCategory.other,
+                    child: Text("Other"),
+                  ),
+                ],
+                onChanged: (PodCastCategory? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Pick Category',
+                  // border: OutlineInputBorder(),
+                ),
               ),
               if (isRecording) const CustomRecordingWaveWidget(),
               const SizedBox(height: 16),
@@ -143,24 +230,40 @@ class _RecordingScreenState extends State<RecordingScreen> {
                 ListTile(
                   title: Text(_recordedPodcasts.last),
                 ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    CustomRecordingButton(
-                      isRecording: isRecording,
-                      onPressed: () => _record(),
+              _recordAudio
+                  ? Column(
+                      children: [
+                        CustomRecordingButton(
+                          isRecording: isRecording,
+                          onPressed: () => _record(),
+                        ),
+                        Text(isRecording
+                            ? 'Tap To Save the recording'
+                            : 'Tap to record'),
+                      ],
+                    )
+                  : TextButton(
+                      onPressed: () {
+                        pickAudioFile();
+                      },
+                      child: const Text("Pick Audio"),
                     ),
-                    const Text('Tap to record'),
-                  ],
-                ),
-              ),
               const Spacer(),
               ElevatedButton(
                   style: ButtonStyle(
                       minimumSize: WidgetStatePropertyAll<Size>(
                           Size(MediaQuery.sizeOf(context).width * .9, 50))),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate() &&
+                        _recordedPodcasts.isNotEmpty) {
+                      Podcast(
+                        audioUrl: _recordedPodcasts.last,
+                        title: _titleController.text,
+                        category: _selectedCategory!,
+                        description: _transcriptController.text,
+                      );
+                    }
+                  },
                   child: const Text("Upload Devotion"))
             ],
           ),
