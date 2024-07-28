@@ -87,7 +87,11 @@ class LatestPodcastSection extends StatelessWidget {
             latestPodcast.title,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          AudioPlayerWidget(url: latestPodcast.audioUrl),
+          AudioPlayerWidget(
+            id: latestPodcast.id!,
+            url: latestPodcast.audioUrl,
+            title: latestPodcast.title,
+          ),
           const SizedBox(height: 8),
 
           const SizedBox(height: 8),
@@ -116,10 +120,19 @@ class PastEpisodesSection extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   builder: (context) => Scaffold(
-                      body: LatestPodcastSection(
-                          latestPodcast: episodes[index]))));
+                    appBar: AppBar(
+                      title: Text(episodes[index].title),
+                    ),
+                    body: SingleChildScrollView(
+                      child:
+                          LatestPodcastSection(latestPodcast: episodes[index]),
+                    ),
+                  ),
+                ),
+              );
             },
             child: Container(
               width: 200,

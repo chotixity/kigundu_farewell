@@ -299,6 +299,10 @@ class _RecordingScreenState extends State<RecordingScreen> {
                     if (_formKey.currentState!.validate() &&
                         _recordedPodcasts.isNotEmpty) {
                       uploadFile(_recordedPodcasts.last);
+                      _recordedPodcasts.clear();
+                      _selectedCategory = null;
+                      _transcriptController.text = "";
+                      _titleController.text = "";
                     }
                   },
                   child: const Text("Upload Devotion"))

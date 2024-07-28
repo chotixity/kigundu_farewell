@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
+  final String title;
   final String url;
-  const AudioPlayerWidget({required this.url, super.key});
+  final String id;
+  const AudioPlayerWidget(
+      {required this.url, required this.title, required this.id, super.key});
 
   @override
   State<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
@@ -17,7 +21,11 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   Future _setupAudioPlayer() async {
     try {
-      await _player.setAudioSource(AudioSource.uri(Uri.parse(widget.url)));
+      await _player.setAudioSource(AudioSource.uri(
+          Uri.parse(
+            widget.url,
+          ),
+          tag: MediaItem(id: widget.id, title: widget.title)));
     } catch (e) {
       print('Error loading audio source: $e');
     }
