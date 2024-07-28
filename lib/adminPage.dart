@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:podcasts/podcast_page.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +25,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
   PodCastCategory? _selectedCategory;
   final TextEditingController _titleController = TextEditingController();
   bool _recordAudio = true;
-  final _player = AudioPlayer();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _transcriptController = TextEditingController();
   final List _recordedPodcasts = [];
@@ -35,7 +36,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
   void initState() {
     _audioRecorder = AudioRecorder();
     WidgetsBinding.instance.scheduleFrameCallback((_) {
-      Provider.of<PodcastProvider>(context, listen: false).getPodcasts();
+      Provider.of<PodcastProvider>(context, listen: false).loadPodcasts();
     });
     super.initState();
   }
@@ -140,13 +141,46 @@ class _RecordingScreenState extends State<RecordingScreen> {
     }
   }
 
+  Future<void> uploadFile(String filePath) async {
+    final podcastProvider =
+        Provider.of<PodcastProvider>(context, listen: false);
+
+    // Create a Podcast object, assuming you have already set up the required fields.
+    Podcast newPodcast = Podcast(
+      title: _titleController
+          .text, // This should be dynamically set, possibly from user input
+      description: _transcriptController.text, // Same as above
+      audioUrl: _recordedPodcasts
+          .last, // This will be set inside the provider after file upload
+      category: PodCastCategory.other, // This should be selected by the user
+    );
+
+    // Call `addPodcast` from the provider which internally handles the upload
+    // and listens to the snapshot events to update progress.
+    await podcastProvider.addPodcast(newPodcast, filePath);
+
+    // Since the provider is notifying listeners, you do not need to set state here for the progress.
+    // The provider itself handles notifying listeners, which will trigger a rebuild in your widget
+    // where you are displaying the progress.
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PodcastProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 5,
         centerTitle: true,
         title: const Text('New Podcast'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const PodcastPage()));
+              },
+              child: const Text('podcasts'))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -249,6 +283,14 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       child: const Text("Pick Audio"),
                     ),
               const Spacer(),
+              if (provider.uploadProgress > 0)
+                Column(
+                  children: [
+                    LinearProgressIndicator(value: provider.uploadProgress),
+                    Text(
+                        '${(provider.uploadProgress * 100).toStringAsFixed(2)}% Uploaded'),
+                  ],
+                ),
               ElevatedButton(
                   style: ButtonStyle(
                       minimumSize: WidgetStatePropertyAll<Size>(
@@ -256,12 +298,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
                   onPressed: () {
                     if (_formKey.currentState!.validate() &&
                         _recordedPodcasts.isNotEmpty) {
-                      Podcast(
-                        audioUrl: _recordedPodcasts.last,
-                        title: _titleController.text,
-                        category: _selectedCategory!,
-                        description: _transcriptController.text,
-                      );
+                      uploadFile(_recordedPodcasts.last);
                     }
                   },
                   child: const Text("Upload Devotion"))

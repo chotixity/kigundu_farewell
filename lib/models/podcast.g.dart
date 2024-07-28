@@ -8,18 +8,22 @@ part of 'podcast.dart';
 
 _$PodcastImpl _$$PodcastImplFromJson(Map<String, dynamic> json) =>
     _$PodcastImpl(
+      id: json['id'] as String?,
       description: json['description'] as String?,
       audioUrl: json['audioUrl'] as String,
       title: json['title'] as String,
       category: $enumDecode(_$PodCastCategoryEnumMap, json['category']),
+      isFeatured: json['isFeatured'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$PodcastImplToJson(_$PodcastImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'description': instance.description,
       'audioUrl': instance.audioUrl,
       'title': instance.title,
       'category': _$PodCastCategoryEnumMap[instance.category]!,
+      'isFeatured': instance.isFeatured,
     };
 
 const _$PodCastCategoryEnumMap = {

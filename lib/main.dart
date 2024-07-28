@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:podcasts/Viewer.dart';
 import 'package:podcasts/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:podcasts/podcast_page.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import './util.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        home: const RecordingScreen(),
+        home: kIsWeb ? const PodcastPage() : const RecordingScreen(),
       ),
     );
   }
