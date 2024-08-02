@@ -13,7 +13,7 @@ class FirebaseService {
     var fileRef = _storage.ref('podcasts/$fileName');
     UploadTask uploadTask = fileRef.putFile(file);
 
-    // Attach a completion listener to update Firestore once the upload completes
+    // A completion listener to update Firestore once the upload completes
     uploadTask.whenComplete(() async {
       String audioUrl = await fileRef.getDownloadURL();
       var podcastData = podcast.toJson();

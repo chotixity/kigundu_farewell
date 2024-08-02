@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:podcasts/Screens/past_episode.dart';
 import '../models/podcast.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
             ),
             Container(
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * .6),
+                  maxHeight: MediaQuery.sizeOf(context).height * .5),
               child: SingleChildScrollView(
                   child: Text(loadedPodcasts.first.description ?? "")),
             ),
@@ -88,34 +89,42 @@ class PreviousEpisode extends StatelessWidget {
       },
       scrollDirection: Axis.horizontal,
       itemCount: previousEpisodes.length,
-      itemBuilder: (contxt, index) {
-        return Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          height: MediaQuery.sizeOf(context).height * .1,
-          width: MediaQuery.sizeOf(context).width * .45,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer),
-          child: Column(
-            children: [
-              // Text(
-              //   previousEpisodes[index].title,
-              //   style: Theme.of(context).textTheme.titleMedium,
-              // ),
-              RichText(
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: previousEpisodes[index].description),
-                  ],
-                ),
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const PastEpisode(),
+                settings: RouteSettings(arguments: index),
               ),
-              // Text(
-              //   maxLines: 3,
-              //   previousEpisodes[index].description ?? "",
-              //   overflow: TextOverflow.ellipsis,
-              // )
-            ],
+            );
+          },
+          child: Container(
+            //margin: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: MediaQuery.sizeOf(context).height * .1,
+            width: MediaQuery.sizeOf(context).width * .45,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              children: [
+                Text(
+                  previousEpisodes[index].title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Flexible(
+                  child: Text(
+                    softWrap: true,
+                    maxLines: 100,
+                    previousEpisodes[index].description == null
+                        ? ""
+                        : previousEpisodes[index].description!.trim(),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

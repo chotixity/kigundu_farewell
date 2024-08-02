@@ -8,6 +8,7 @@ class AudioPlayerWidget extends StatefulWidget {
   final String title;
   final String url;
   final String id;
+
   const AudioPlayerWidget(
       {required this.url, required this.title, required this.id, super.key});
 
