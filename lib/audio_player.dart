@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:just_audio/just_audio.dart';
@@ -15,6 +16,7 @@ class AudioPlayerWidget extends StatefulWidget {
 }
 
 class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
+  bool _showSpeedSlider = false, _showVolumeSlider = false;
   final _player = AudioPlayer();
   final GlobalKey _hoverKey = GlobalKey();
   bool _isHovering = false;
@@ -85,9 +87,45 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             ),
         ];
 
-        if (_isHovering) {
+        if (kIsWeb && _isHovering) {
           controls.add(_speedSlider());
           controls.add(_volumeSlider());
+        } else {
+          controls.addAll([
+            IconButton(
+              icon: const Icon(Icons.speed),
+              onPressed: () {
+                setState(() {
+                  _showSpeedSlider = !_showSpeedSlider;
+                  if (_showSpeedSlider) {
+                    _showVolumeSlider =
+                        false; //Ensure that the speed and volume slider dont show same time
+                  }
+                });
+              },
+            ),
+            _showSpeedSlider
+                ? _speedSlider()
+                : const SizedBox(), //Toggles the showing of a  speed slider
+            IconButton(
+              icon: const Icon(Icons.volume_up),
+              onPressed: () {
+                setState(() {
+                  _showVolumeSlider = !_showVolumeSlider;
+                  if (_showVolumeSlider) {
+                    _showSpeedSlider =
+                        false; //Ensure that the speed and volume slider dont show same time
+                  }
+                });
+              },
+            ),
+            _showVolumeSlider
+                ? _volumeSlider()
+                : const SizedBox() // toggles the addition of a voulme slider
+          ]);
+
+          // controls.add(_speedSlider());
+          // controls.add(_volumeSlider());
         }
 
         return Row(
@@ -118,17 +156,20 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       stream: _player.speedStream,
       builder: (context, snapshot) {
         final speed = snapshot.data ?? 1.0;
-        return Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.speed),
-          Slider(
-            min: 0.5,
-            max: 1.5,
-            divisions: 4,
-            label: "${speed.toStringAsFixed(1)}x",
-            value: speed,
-            onChanged: _player.setSpeed,
-          ),
-        ]);
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            //const Icon(Icons.speed),
+            Slider(
+              min: 0.5,
+              max: 1.5,
+              divisions: 4,
+              label: "${speed.toStringAsFixed(1)}x",
+              value: speed,
+              onChanged: _player.setSpeed,
+            ),
+          ],
+        );
       },
     );
   }
@@ -140,7 +181,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         final volume = snapshot.data ?? 1.0;
         return Row(
           children: [
-            const Icon(Icons.volume_up),
             Slider(
               min: 0.0,
               max: 1.0,

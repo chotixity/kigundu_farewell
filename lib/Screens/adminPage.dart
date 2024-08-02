@@ -1,18 +1,17 @@
 import 'dart:math';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
-import 'package:podcasts/podcast_page.dart';
+import 'package:podcasts/Screens/test_podcast_page.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/widgets.dart';
-import 'package:just_audio/just_audio.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import './models/podcast.dart';
+import '../models/podcast.dart';
 import 'package:record/record.dart';
-import './custom_recording_button.dart';
-import './custom_recording_wave_widget.dart';
+import '../custom_recording_button.dart';
+import '../custom_recording_wave_widget.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({super.key});
@@ -145,8 +144,9 @@ class _RecordingScreenState extends State<RecordingScreen> {
     final podcastProvider =
         Provider.of<PodcastProvider>(context, listen: false);
 
-    // Create a Podcast object, assuming you have already set up the required fields.
+    // Create a Podcast object,
     Podcast newPodcast = Podcast(
+      timestamp: DateTime.now(),
       title: _titleController
           .text, // This should be dynamically set, possibly from user input
       description: _transcriptController.text, // Same as above
@@ -158,10 +158,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
     // Call `addPodcast` from the provider which internally handles the upload
     // and listens to the snapshot events to update progress.
     await podcastProvider.addPodcast(newPodcast, filePath);
-
-    // Since the provider is notifying listeners, you do not need to set state here for the progress.
-    // The provider itself handles notifying listeners, which will trigger a rebuild in your widget
-    // where you are displaying the progress.
   }
 
   @override
@@ -176,8 +172,10 @@ class _RecordingScreenState extends State<RecordingScreen> {
         actions: [
           TextButton(
               onPressed: () {
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => const PodcastPage()));
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const PodcastPage()));
+                    builder: (context) => const TestPodcastPage()));
               },
               child: const Text('podcasts'))
         ],

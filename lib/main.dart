@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:podcasts/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:podcasts/podcast_page.dart';
+import 'package:podcasts/Screens/podcast_page.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import './util.dart';
 import './theme.dart';
-import 'adminPage.dart';
+import 'Screens/adminPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
