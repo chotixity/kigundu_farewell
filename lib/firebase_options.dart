@@ -47,28 +47,33 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAinX6-ArYwGZc-S_87Jifaml-Kgp6NWpw',
-    appId: '1:196835660481:web:7ee6055c04b8b92a1c7a40',
-    messagingSenderId: '196835660481',
-    projectId: 'podcasts-3b171',
-    authDomain: 'podcasts-3b171.firebaseapp.com',
-    storageBucket: 'podcasts-3b171.appspot.com',
+    apiKey: 'AIzaSyCC4-yJTIqvflZ4Fxxf9P3D1YVBO44RjRg',
+    appId: '1:1030258182554:web:39b7ccadc3ae6c8faa9223',
+    messagingSenderId: '1030258182554',
+    projectId: 'great-hope',
+    authDomain: 'great-hope.firebaseapp.com',
+    databaseURL: 'https://great-hope-default-rtdb.firebaseio.com',
+    storageBucket: 'great-hope.appspot.com',
+    measurementId: 'G-8Y0W1XRVNE',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCTEp12ZNtvvVbosHQQQwGnrRZWZGQeLM4',
-    appId: '1:196835660481:android:bf857c68e4844cff1c7a40',
-    messagingSenderId: '196835660481',
-    projectId: 'podcasts-3b171',
-    storageBucket: 'podcasts-3b171.appspot.com',
+    apiKey: 'AIzaSyDHXJ5CYLmehU-YWO6UA0GEiJA_ONUWszU',
+    appId: '1:1030258182554:android:bdb55372f7aa6c53aa9223',
+    messagingSenderId: '1030258182554',
+    projectId: 'great-hope',
+    databaseURL: 'https://great-hope-default-rtdb.firebaseio.com',
+    storageBucket: 'great-hope.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDw-MZllzxdI76DGv9M3AaP2woXnnTmA8c',
-    appId: '1:196835660481:ios:1b0e1cbdf8e9ffb31c7a40',
-    messagingSenderId: '196835660481',
-    projectId: 'podcasts-3b171',
-    storageBucket: 'podcasts-3b171.appspot.com',
+    apiKey: 'AIzaSyCWOtUji8X6J_zTJGQTj0vCfKDTRRZwrO8',
+    appId: '1:1030258182554:ios:77887ab3cafb80c8aa9223',
+    messagingSenderId: '1030258182554',
+    projectId: 'great-hope',
+    databaseURL: 'https://great-hope-default-rtdb.firebaseio.com',
+    storageBucket: 'great-hope.appspot.com',
     iosBundleId: 'com.example.podcasts',
   );
+
 }

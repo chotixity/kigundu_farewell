@@ -1,26 +1,37 @@
 {
   "project_info": {
-    "project_number": "196835660481",
-    "project_id": "podcasts-3b171",
-    "storage_bucket": "podcasts-3b171.appspot.com"
+    "project_number": "1030258182554",
+    "firebase_url": "https://great-hope-default-rtdb.firebaseio.com",
+    "project_id": "great-hope",
+    "storage_bucket": "great-hope.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196835660481:android:bf857c68e4844cff1c7a40",
+        "mobilesdk_app_id": "1:1030258182554:android:bdb55372f7aa6c53aa9223",
         "android_client_info": {
-          "package_name": "com.example.podcasts"
+          "package_name": "com.example.kigundu_farewell"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1030258182554-lo11im6e52037it4n459sut2biphbmq1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCTEp12ZNtvvVbosHQQQwGnrRZWZGQeLM4"
+          "current_key": "AIzaSyDHXJ5CYLmehU-YWO6UA0GEiJA_ONUWszU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030258182554-lo11im6e52037it4n459sut2biphbmq1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

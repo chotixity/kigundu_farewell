@@ -2,17 +2,16 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
-import 'package:podcasts/Screens/podcast_page.dart';
-import 'package:podcasts/Screens/test_podcast_page.dart';
+import 'package:podcasts/Screens/normal_user/test_podcast_page.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../models/podcast.dart';
+import '../../models/podcast.dart';
 import 'package:record/record.dart';
-import '../custom_recording_button.dart';
-import '../custom_recording_wave_widget.dart';
+import '../../custom_recording_button.dart';
+import '../../custom_recording_wave_widget.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({super.key});

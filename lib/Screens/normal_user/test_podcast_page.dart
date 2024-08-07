@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:podcasts/Screens/past_episode.dart';
-import '../models/podcast.dart';
+import 'package:podcasts/Screens/normal_user/past_episode.dart';
+import '../../models/podcast.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:podcasts/audio_player.dart';
@@ -33,7 +33,7 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
         child: Column(
           children: [
             AudioPlayerWidget(
@@ -46,7 +46,7 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
             ),
             Container(
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * .5),
+                  maxHeight: MediaQuery.sizeOf(context).height * .6),
               child: SingleChildScrollView(
                   child: Text(loadedPodcasts.first.description ?? "")),
             ),
@@ -100,9 +100,8 @@ class PreviousEpisode extends StatelessWidget {
             );
           },
           child: Container(
-            //margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            height: MediaQuery.sizeOf(context).height * .1,
+            height: 0,
             width: MediaQuery.sizeOf(context).width * .45,
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondaryContainer,

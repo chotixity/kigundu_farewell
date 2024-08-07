@@ -1,14 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:podcasts/Screens/common/auth_screen.dart';
 import 'package:podcasts/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:podcasts/Screens/podcast_page.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import './util.dart';
 import './theme.dart';
-import 'Screens/adminPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +32,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        home: kIsWeb ? const PodcastPage() : const RecordingScreen(),
+        // home: kIsWeb ? const PodcastPage() : const RecordingScreen(),
+        home: const AuthScreen(),
       ),
     );
   }
