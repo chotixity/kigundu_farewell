@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:podcasts/Screens/common/auth_screen.dart';
+import 'package:podcasts/features/auth/provider/auth_provider.dart';
+import 'package:podcasts/features/auth/view/auth_wrapper.dart';
 import 'package:podcasts/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
-import './util.dart';
-import './theme.dart';
+import 'utils/util.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,13 +28,20 @@ class MyApp extends StatelessWidget {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Open Sans");
     MaterialTheme theme = MaterialTheme(textTheme);
-    return ChangeNotifierProvider(
-      create: (_) => PodcastProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => PodcastProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: brightness == Brightness.light ? theme.light() : theme.dark(),
         // home: kIsWeb ? const PodcastPage() : const RecordingScreen(),
-        home: const AuthScreen(),
+        home: const AuthWrapper(),
       ),
     );
   }

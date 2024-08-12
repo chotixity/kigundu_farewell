@@ -6,21 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future signUpWithEmailAndPassword(String email, String password) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
   Future<UserCredential> signInWithGoogle() async {
     if (kIsWeb) {
       GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
       googleAuthProvider
           .addScope('https://www.googleapis.com/auth/contacts.readonly');
-      return await FirebaseAuth.instance.signInWithPopup(googleAuthProvider);
+      return await _firebaseAuth.signInWithPopup(googleAuthProvider);
     } else {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -32,7 +23,7 @@ class Auth {
         idToken: googleAuth?.idToken,
       );
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return await _firebaseAuth.signInWithCredential(credential);
     }
   }
 }
