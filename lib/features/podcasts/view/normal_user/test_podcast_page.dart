@@ -42,6 +42,10 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
               )
             : Column(
                 children: [
+                  Text(
+                    loadedPodcasts.first.title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   AudioPlayerWidget(
                     url: loadedPodcasts.first.audioUrl,
                     title: loadedPodcasts.first.title,

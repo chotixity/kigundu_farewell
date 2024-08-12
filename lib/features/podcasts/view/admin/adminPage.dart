@@ -46,17 +46,6 @@ class _RecordingScreenState extends State<RecordingScreen> {
     super.dispose();
   }
 
-  String _generateRandomId() {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    final random = Random();
-    return List.generate(
-      10,
-      (index) => chars[random.nextInt(chars.length)],
-      growable: false,
-    ).join();
-  }
-
-  //TODO: Pick files from local storage
   Future<void> pickAudioFile() async {
     try {
       // Configure the file picker to pick audio files
@@ -90,7 +79,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
           '=========>>>>>>>>>>> RECORDING!!!!!!!!!!!!!!! <<<<<<===========');
 
       String filePath = await getApplicationDocumentsDirectory()
-          .then((value) => '${value.path}/${_generateRandomId()}.wav');
+          .then((value) => '${value.path}/${_titleController.text}.wav');
 
       await _audioRecorder.start(
         const RecordConfig(
@@ -147,12 +136,11 @@ class _RecordingScreenState extends State<RecordingScreen> {
     // Create a Podcast object,
     Podcast newPodcast = Podcast(
       timestamp: DateTime.now(),
-      title: _titleController
-          .text, // This should be dynamically set, possibly from user input
-      description: _transcriptController.text, // Same as above
+      title: _titleController.text,
+      description: _transcriptController.text,
       audioUrl: _recordedPodcasts
           .last, // This will be set inside the provider after file upload
-      category: PodCastCategory.other, // This should be selected by the user
+      category: PodCastCategory.other,
     );
 
     // Call `addPodcast` from the provider which internally handles the upload
