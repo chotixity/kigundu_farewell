@@ -4,7 +4,7 @@ import 'package:podcasts/features/auth/view/auth_wrapper.dart';
 import 'package:podcasts/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:podcasts/provider/podcast_provider.dart';
+import 'package:podcasts/features/podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import 'utils/util.dart';
 import 'utils/theme.dart';

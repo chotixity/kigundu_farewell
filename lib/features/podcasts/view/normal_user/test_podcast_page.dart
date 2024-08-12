@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:podcasts/Screens/normal_user/past_episode.dart';
+import 'package:podcasts/features/podcasts/view/normal_user/past_episode.dart';
+import 'package:podcasts/features/podcasts/view/normal_user/widgets/user_appbar.dart';
 import '../../models/podcast.dart';
-import 'package:podcasts/provider/podcast_provider.dart';
+import 'package:podcasts/features/podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:podcasts/audio_player.dart';
 
@@ -27,45 +28,50 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
     final podcastsProvider =
         Provider.of<PodcastProvider>(context, listen: false);
     List<Podcast> loadedPodcasts = podcastsProvider.podcasts; //Get all episodes
-    List<Podcast> previousEpisodes = loadedPodcasts
-        .getRange(1, loadedPodcasts.length - 1)
-        .toList(); //Gets previous episodes removing the one for today
+    List<Podcast> previousEpisodes = loadedPodcasts.length > 1
+        ? loadedPodcasts.getRange(1, loadedPodcasts.length - 1).toList()
+        : []; //Gets previous episodes removing the one for today
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const UserAppbar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-        child: Column(
-          children: [
-            AudioPlayerWidget(
-              url: loadedPodcasts.first.audioUrl,
-              title: loadedPodcasts.first.title,
-              id: loadedPodcasts.first.id!,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * .6),
-              child: SingleChildScrollView(
-                  child: Text(loadedPodcasts.first.description ?? "")),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: Row(
+        child: loadedPodcasts.isEmpty
+            ? const Center(
+                child: Text(
+                    "There are no podcasts loaded currently, Check your internet"),
+              )
+            : Column(
                 children: [
+                  AudioPlayerWidget(
+                    url: loadedPodcasts.first.audioUrl,
+                    title: loadedPodcasts.first.title,
+                    id: loadedPodcasts.first.id!,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.sizeOf(context).height * .6),
+                    child: SingleChildScrollView(
+                        child: Text(loadedPodcasts.first.description ?? "")),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Expanded(
-                    child: PreviousEpisode(
-                      previousEpisodes: previousEpisodes,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: PreviousEpisode(
+                            previousEpisodes: previousEpisodes,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

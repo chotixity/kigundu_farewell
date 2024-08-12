@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:podcasts/models/podcast.dart';
+import 'package:podcasts/features/podcasts/models/podcast.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:podcasts/repository/firebase_service.dart';
 

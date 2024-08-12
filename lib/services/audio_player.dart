@@ -1,7 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
-import '../models/podcast.dart';
+import '../features/podcasts/models/podcast.dart';
 
 class AudioPlayerManager {
   Podcast podcast;

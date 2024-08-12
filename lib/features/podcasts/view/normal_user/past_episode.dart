@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:podcasts/audio_player.dart';
-import 'package:podcasts/provider/podcast_provider.dart';
+import 'package:podcasts/features/podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:podcasts/models/podcast.dart';
+import 'package:podcasts/features/podcasts/models/podcast.dart';
 
 class PastEpisode extends StatefulWidget {
   const PastEpisode({super.key});

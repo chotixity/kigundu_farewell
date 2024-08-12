@@ -9,6 +9,8 @@ class AuthProvider with ChangeNotifier {
   final Auth _auth = Auth();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final _controller = StreamController<AuthenticationStatus>();
+  Map<String, String?> _userData = {};
+  Map<String, String?> get userData => _userData;
 
   AuthProvider() {
     _firebaseAuth.authStateChanges().listen((User? user) {
@@ -52,12 +54,14 @@ class AuthProvider with ChangeNotifier {
     User? user = _firebaseAuth.currentUser;
 
     if (user != null) {
-      return {
+      _userData = {
         'displayName': user.displayName,
         'email': user.email,
         'photoURL': user.photoURL,
         'uid': user.uid,
       };
+      print(_userData);
+      return _userData;
     } else {
       throw Exception('No user signed in');
     }
