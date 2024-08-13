@@ -33,7 +33,11 @@ class _PastEpisodeState extends State<PastEpisode> {
         child: Column(
           children: [
             AudioPlayerWidget(
-                url: podcast.audioUrl, title: podcast.title, id: podcast.id!),
+              category: podcast.category,
+              url: podcast.audioUrl,
+              title: podcast.title,
+              id: podcast.id!,
+            ),
             const SizedBox(
               height: 20,
             ),

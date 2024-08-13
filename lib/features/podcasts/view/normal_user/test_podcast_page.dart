@@ -4,7 +4,7 @@ import 'package:podcasts/features/podcasts/view/normal_user/widgets/user_appbar.
 import '../../models/podcast.dart';
 import 'package:podcasts/features/podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:podcasts/audio_player.dart';
+import 'package:podcasts/audio_player_Widget.dart';
 
 class TestPodcastPage extends StatefulWidget {
   const TestPodcastPage({super.key});
@@ -28,7 +28,7 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
     final podcastsProvider =
         Provider.of<PodcastProvider>(context, listen: false);
     List<Podcast> loadedPodcasts = podcastsProvider.podcasts; //Get all episodes
-    List<Podcast> previousEpisodes = loadedPodcasts.length > 1
+    List<Podcast> previousEpisodes = loadedPodcasts.isNotEmpty
         ? loadedPodcasts.getRange(1, loadedPodcasts.length - 1).toList()
         : []; //Gets previous episodes removing the one for today
     return Scaffold(
@@ -47,6 +47,7 @@ class _TestPodcastPageState extends State<TestPodcastPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   AudioPlayerWidget(
+                    category: loadedPodcasts.first.category,
                     url: loadedPodcasts.first.audioUrl,
                     title: loadedPodcasts.first.title,
                     id: loadedPodcasts.first.id!,

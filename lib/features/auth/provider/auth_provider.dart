@@ -19,6 +19,8 @@ class AuthProvider with ChangeNotifier {
       } else {
         _controller.add(AuthenticationStatus.authenticated);
       }
+    }, onError: (error) {
+      _controller.addError(error);
     });
   }
 

@@ -25,6 +25,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
               child: CircularProgressIndicator(),
             ),
           );
+        } else if (snapshot.hasError) {
+          return const AuthScreen();
         }
 
         AuthenticationStatus status = snapshot.data!;

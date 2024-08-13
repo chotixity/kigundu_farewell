@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -10,8 +9,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/podcast.dart';
 import 'package:record/record.dart';
-import '../../../../custom_recording_button.dart';
-import '../../../../custom_recording_wave_widget.dart';
+import '../normal_user/widgets/custom_recording_button.dart';
+import '../normal_user/widgets/custom_recording_wave_widget.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({super.key});
@@ -175,21 +174,25 @@ class _RecordingScreenState extends State<RecordingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SwitchListTile.adaptive(
-                title: const Text(
-                  "Record Audio",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                ),
-                subtitle: const Text(
-                    "Toggle this switch to pick a recorded audio from the device"),
-                value: _recordAudio,
-                onChanged: (value) {
-                  setState(() {
-                    _recordAudio = value;
-                  });
-                },
-              ),
+              isRecording
+                  ? const SizedBox()
+                  : SwitchListTile.adaptive(
+                      title: const Text(
+                        "Record Audio",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 22),
+                      ),
+                      subtitle: const Text(
+                          "Toggle this switch to pick a recorded audio from the device"),
+                      value: _recordAudio,
+                      onChanged: (value) {
+                        setState(() {
+                          _recordAudio = value;
+                        });
+                      },
+                    ),
               const Spacer(),
+              const Text("Please fill out the title before recording"),
               TextFormField(
                 controller: _titleController,
                 validator: (value) {

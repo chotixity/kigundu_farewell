@@ -88,6 +88,7 @@ class LatestPodcastSection extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           AudioPlayerWidget(
+            category: latestPodcast.category,
             id: latestPodcast.id!,
             url: latestPodcast.audioUrl,
             title: latestPodcast.title,
