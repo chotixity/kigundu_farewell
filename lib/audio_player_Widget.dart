@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:podcasts/features/share/share.dart';
 import 'package:just_audio/just_audio.dart';
 import './features/podcasts/models/podcast.dart';
 import './services/audio_player.dart';
@@ -32,6 +33,16 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     super.initState();
     _audioManager = AudioPlayerManager(); // Use the singleton instance
     WidgetsBinding.instance.addPostFrameCallback((_) => _setupAudioPlayer());
+  }
+
+  void shareAudioFromUrl(String audioUrl) async {
+    try {
+      final filePath = await downloadAndRenameAudio(audioUrl);
+      print(filePath);
+      shareAudio(filePath);
+    } catch (e) {
+      print('Error sharing audio: $e');
+    }
   }
 
   Future<void> _setupAudioPlayer() async {
@@ -124,6 +135,11 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               });
             }),
         if (_showVolumeSlider) _volumeSlider(),
+        IconButton(
+            onPressed: () {
+              shareAudioFromUrl(widget.url);
+            },
+            icon: const Icon(Icons.share))
       ],
     );
   }
