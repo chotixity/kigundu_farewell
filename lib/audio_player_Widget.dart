@@ -8,8 +8,7 @@ class AudioPlayerWidget extends StatefulWidget {
   final String title;
   final String url;
   final String id;
-  final PodCastCategory
-      category; // Assuming category is a String for simplicity
+  final PodCastCategory category;
 
   const AudioPlayerWidget({
     required this.category,
@@ -108,14 +107,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       children: [
         IconButton(
           icon: const Icon(Icons.speed),
-          onPressed: () => setState(() => _showSpeedSlider = !_showSpeedSlider),
+          onPressed: () {
+            setState(() {
+              _showSpeedSlider = !_showSpeedSlider;
+              _showVolumeSlider = false;
+            });
+          },
         ),
         if (_showSpeedSlider) _speedSlider(),
         IconButton(
-          icon: const Icon(Icons.volume_up),
-          onPressed: () =>
-              setState(() => _showVolumeSlider = !_showVolumeSlider),
-        ),
+            icon: const Icon(Icons.volume_up),
+            onPressed: () {
+              setState(() {
+                _showVolumeSlider = !_showVolumeSlider;
+                _showSpeedSlider = false;
+              });
+            }),
         if (_showVolumeSlider) _volumeSlider(),
       ],
     );

@@ -4,7 +4,7 @@ import 'package:podcasts/features/podcasts/models/podcast.dart';
 import 'package:podcasts/features/podcasts/provider/podcast_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:podcasts/audio_player.dart';
+import 'package:podcasts/audio_player_Widget.dart';
 
 class PodcastPage extends StatefulWidget {
   const PodcastPage({super.key});
